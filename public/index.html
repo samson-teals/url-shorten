@@ -1,0 +1,30 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script src="jquery-3.4.1.min.js"></script>
+  <script src="moment.min.js"></script>
+  <script src="main.js"></script>
+</head>
+<body>
+  <h1>URL Shortener</h1>
+  <ul>
+    <li><input type="text" id="url" class="li-text"><input type="button" id="add" value="Add URL"></li>
+    <li><input type="text" id="key" class="li-text"><input type="button" id="remove" value="Delete Key"></li>
+  </ul>
+
+  <div id="status"></div>
+
+  <h2>Last Updated</h2>
+  <table id="last">
+    <thead>
+      <tr>
+        <th>key</th>
+        <th>url</th>
+        <th>updated</th>
+        <th>created</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</body>
+</html>

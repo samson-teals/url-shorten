@@ -1,0 +1,16 @@
+input.li-text {
+  width: 250px;
+}
+
+table#last {
+  border-collapse: collapse;
+}
+
+table#last thead {
+  background: #aaaaaa;
+}
+
+table#last tbody td {
+  border: thin solid #aaaaaa;
+  padding: 4px;
+}
