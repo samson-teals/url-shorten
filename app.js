@@ -32,6 +32,9 @@ app.register(fastify_static, {
 const InitDb = require('./init_db');
 const initdb = new InitDb();
 
+const Shortener = require('./shortener');
+const shortener = new Shortener();
+
 ///////////////////////////////////////////////////////////
 // Main async section runs after static initialization
 ///////////////////////////////////////////////////////////
@@ -43,6 +46,7 @@ const main = async () => {
   ///////////////////////////////////////////////////////////
 
   await initdb.init();
+  await shortener.init();
 
   ///////////////////////////////////////////////////////////
   // add handlers
@@ -50,22 +54,7 @@ const main = async () => {
 
   app.get('/last/:n(^\\d+)', async (req, res) => {
     const n = req.params.n || 10;
-
-    // later, get data from the database
-    const data = [
-      {
-        key: "s1",
-        url: "http://google.ca",
-        created: "2020-02-24T01:31:45.554Z",
-        updated: "2020-03-03T05:55:28.014Z"
-      },
-      {
-        key: "s2",
-        url: "http://microsoft.com",
-        created: "2020-01-24T01:31:45.554Z",
-        updated: "2020-01-25T05:55:28.014Z"
-      },
-    ];
+    const data = await shortener.last(n);
     res.send(data);
   });
 
