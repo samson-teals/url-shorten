@@ -58,6 +58,56 @@ const main = async () => {
     res.send(data);
   });
 
+
+  app.post('/add', async (req, res) => {
+    const url = req.body.url;
+    const url_starts_with_http = true;
+    if (url_starts_with_http) {
+      // todo: get data from shortener module
+      const data = {
+        key: 'an-added-key',
+        url: 'http://some-url',
+        created: '2020-03-08T22:35:44.076560-07:00',
+        updated: '2020-03-08T22:35:44.076560-07:00'
+      };
+      res.send(data);
+    }
+    else {
+      res.code(400);
+      res.send('bad pattern');
+    }
+  });
+
+  app.post('/remove', async (req, res) => {
+    const key = req.body.key;
+    // todo: get data from shortener module
+    const data = {
+      key: 'a-removed-key',
+      url: 'http://some-url',
+      created: '2020-03-08T22:35:44.076560-07:00',
+      updated: '2020-03-08T22:35:44.076560-07:00'
+    };
+    res.send(data);
+  });
+
+  app.get('/r/:key', async (req, res) => {
+    const key = req.params.key;
+    // todo: get data from shortener module
+    const data = {
+      key: 'a-key',
+      url: 'http://google.ca',
+      created: '2020-03-08T22:35:44.076560-07:00',
+      updated: '2020-03-08T22:35:44.076560-07:00'
+    };
+
+    if (data && data.url) {
+      res.redirect(302, data.url);
+    }
+    else {
+      res.send404();
+    }
+  });
+
   ///////////////////////////////////////////////////////////
   // start application server
   ///////////////////////////////////////////////////////////

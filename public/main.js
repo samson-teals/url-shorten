@@ -7,7 +7,17 @@ $(document).ready(async () => {
 
 const addHandler = async () => {
   try {
-    $('#status').html('last operation: add');
+    const url = $('#url').val();
+    const data = await $.ajax({
+      type: 'POST',
+      url: 'add',
+      data: JSON.stringify({
+        url: url
+      }),
+      contentType: 'application/json'
+    });
+
+    $('#status').html(JSON.stringify(data));
   }
   catch (e) {
     populateErrorStatus();
