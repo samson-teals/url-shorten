@@ -32,6 +32,9 @@ app.register(fastify_static, {
 const InitDb = require('./init_db');
 const initdb = new InitDb();
 
+const Shortener = require('./shortener');
+const shortener = new Shortener();
+
 ///////////////////////////////////////////////////////////
 // Main async section runs after static initialization
 ///////////////////////////////////////////////////////////
@@ -43,6 +46,7 @@ const main = async () => {
   ///////////////////////////////////////////////////////////
 
   await initdb.init();
+  await shortener.init();
 
   ///////////////////////////////////////////////////////////
   // add handlers
@@ -50,23 +54,58 @@ const main = async () => {
 
   app.get('/last/:n(^\\d+)', async (req, res) => {
     const n = req.params.n || 10;
-
-    // later, get data from the database
-    const data = [
-      {
-        key: "s1",
-        url: "http://google.ca",
-        created: "2020-02-24T01:31:45.554Z",
-        updated: "2020-03-03T05:55:28.014Z"
-      },
-      {
-        key: "s2",
-        url: "http://microsoft.com",
-        created: "2020-01-24T01:31:45.554Z",
-        updated: "2020-01-25T05:55:28.014Z"
-      },
-    ];
+    const data = await shortener.last(n);
     res.send(data);
+  });
+
+
+  app.post('/add', async (req, res) => {
+    const url = req.body.url;
+    const url_starts_with_http = true;
+    if (url_starts_with_http) {
+      // todo: get data from shortener module
+      const data = {
+        key: 'an-added-key',
+        url: 'http://some-url',
+        created: '2020-03-08T22:35:44.076560-07:00',
+        updated: '2020-03-08T22:35:44.076560-07:00'
+      };
+      res.send(data);
+    }
+    else {
+      res.code(400);
+      res.send('bad pattern');
+    }
+  });
+
+  app.post('/remove', async (req, res) => {
+    const key = req.body.key;
+    // todo: get data from shortener module
+    const data = {
+      key: 'a-removed-key',
+      url: 'http://some-url',
+      created: '2020-03-08T22:35:44.076560-07:00',
+      updated: '2020-03-08T22:35:44.076560-07:00'
+    };
+    res.send(data);
+  });
+
+  app.get('/r/:key', async (req, res) => {
+    const key = req.params.key;
+    // todo: get data from shortener module
+    const data = {
+      key: 'a-key',
+      url: 'http://google.ca',
+      created: '2020-03-08T22:35:44.076560-07:00',
+      updated: '2020-03-08T22:35:44.076560-07:00'
+    };
+
+    if (data && data.url) {
+      res.redirect(302, data.url);
+    }
+    else {
+      res.send404();
+    }
   });
 
   ///////////////////////////////////////////////////////////

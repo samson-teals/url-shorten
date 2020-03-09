@@ -7,7 +7,17 @@ $(document).ready(async () => {
 
 const addHandler = async () => {
   try {
-    $('#status').html('last operation: add');
+    const url = $('#url').val();
+    const data = await $.ajax({
+      type: 'POST',
+      url: 'add',
+      data: JSON.stringify({
+        url: url
+      }),
+      contentType: 'application/json'
+    });
+
+    $('#status').html(JSON.stringify(data));
   }
   catch (e) {
     populateErrorStatus();
@@ -24,24 +34,7 @@ const removeHandler = async () => {
 };
 
 const getLast = async n => {
-  // mock data for now
-  return [
-    {
-      key: "k1",
-      url: "https://google.ca",
-      created: "2020-02-24T01:31:45.554Z",
-      updated: "2020-03-03T05:55:28.014Z"
-    },
-    {
-      key: "k2",
-      url: "https://microsoft.com",
-      created: "2020-01-24T01:31:45.554Z",
-      updated: "2020-01-25T05:55:28.014Z"
-    },
-  ];
-
-  // later, try getting data from the server
-  //return $.get(`last/${n}`);
+  return $.get(`last/${n}`);
 };
 
 const populateLast = async () => {
