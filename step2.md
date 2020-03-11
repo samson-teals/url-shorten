@@ -41,3 +41,5 @@ See https://stackoverflow.com/questions/1865837/whats-the-difference-between-win
   - implementation of `remove`
 - Step 2d
   - a "better" `insert` that `update`s the record if the user tries to insert the same url again
+- Step 2e
+  - enhancements for a better user experience

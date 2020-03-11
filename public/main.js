@@ -17,7 +17,9 @@ const addHandler = async () => {
       contentType: 'application/json'
     });
 
-    $('#status').html(JSON.stringify(data));
+    $('#url').val('');
+    populateAddStatus(data);
+    populateLast();
   }
   catch (e) {
     populateErrorStatus();
@@ -36,7 +38,10 @@ const removeHandler = async () => {
       contentType: 'application/json'
     });
 
-    $('#status').html(JSON.stringify(data));
+    $('#url').val(data.url);
+    $('#key').val('');
+    populateRemoveStatus(data);
+    populateLast();
   }
   catch (e) {
     populateErrorStatus();
@@ -64,11 +69,29 @@ const populateErrorStatus = () => {
   $('#status').html('last operation failed');
 };
 
+const populateAddStatus = data => {
+  let status = $('#status');
+
+  const { key, url, created, updated } = renderLinkData(data);
+  const statusStr = `Add ok:<ul><li>key: ${key}</li><li>url: ${url}</li><li>updated: ${updated}</li><li>created: ${created}</li></ul>`;
+
+  status.html(statusStr);
+};
+
+const populateRemoveStatus = data => {
+  $('#status').html(`removed key ${data.key}`);
+};
+
 const renderLinkData = data => {
   let key = data.key;
   let url = data.url;
   let created = data.created;
   let updated = data.updated;
+
+  key = `<a href="r/${key}">${key}</a>`;
+  url = `<a href="${url}">${url}</a>`;
+  created = moment.utc(created).local().format('lll');
+  updated = moment.utc(updated).local().format('lll');
 
   return {
     key: key,

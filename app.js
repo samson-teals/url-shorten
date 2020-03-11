@@ -58,10 +58,9 @@ const main = async () => {
     res.send(data);
   });
 
-
   app.post('/add', async (req, res) => {
-    const url = req.body.url;
-    const url_starts_with_http = true;
+    const url = req.body.url.trim();
+    const url_starts_with_http = url.match(/^https?:\/\//);
     if (url_starts_with_http) {
       const data = await shortener.insert(url);
       res.send(data);
@@ -73,20 +72,14 @@ const main = async () => {
   });
 
   app.post('/remove', async (req, res) => {
-    const key = req.body.key;
+    const key = req.body.key.trim();
     const data = await shortener.remove(key);
     res.send(data);
   });
 
   app.get('/r/:key', async (req, res) => {
     const key = req.params.key;
-    // todo: get data from shortener module
-    const data = {
-      key: 'a-key',
-      url: 'http://google.ca',
-      created: '2020-03-08T22:35:44.076560-07:00',
-      updated: '2020-03-08T22:35:44.076560-07:00'
-    };
+    const data = await shortener.lookup(key);
 
     if (data && data.url) {
       res.redirect(302, data.url);
