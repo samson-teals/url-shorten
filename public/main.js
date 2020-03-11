@@ -26,7 +26,17 @@ const addHandler = async () => {
 
 const removeHandler = async () => {
   try {
-    $('#status').html('last operation: remove');
+    const key = $('#key').val();
+    const data = await $.ajax({
+      type: 'POST',
+      url: 'remove',
+      data: JSON.stringify({
+        key: key
+      }),
+      contentType: 'application/json'
+    });
+
+    $('#status').html(JSON.stringify(data));
   }
   catch (e) {
     populateErrorStatus();

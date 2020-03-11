@@ -63,7 +63,6 @@ const main = async () => {
     const url = req.body.url;
     const url_starts_with_http = true;
     if (url_starts_with_http) {
-      // todo: get data from shortener module
       const data = await shortener.insert(url);
       res.send(data);
     }
@@ -75,13 +74,7 @@ const main = async () => {
 
   app.post('/remove', async (req, res) => {
     const key = req.body.key;
-    // todo: get data from shortener module
-    const data = {
-      key: 'a-removed-key',
-      url: 'http://some-url',
-      created: '2020-03-08T22:35:44.076560-07:00',
-      updated: '2020-03-08T22:35:44.076560-07:00'
-    };
+    const data = await shortener.remove(key);
     res.send(data);
   });
 

@@ -10,8 +10,7 @@ class Shortener extends dbClient {
   }
 
   async lookup(key) {
-    // todo: fill in query
-    const res = await this._db.query('SELECT $1', [key]);
+    const res = await this._db.query('SELECT url, key FROM links WHERE key = $1', [key]);
     return res.rows.length ? res.rows[0] : null;
   }
 
@@ -51,12 +50,17 @@ class Shortener extends dbClient {
   }
 
   async remove(key) {
-    // check if the key exists
-    // - if it does, DELETE the key
-    // - if it doesn't, you don't need to do anything
-    // In either case, it may be helpful to return something
-    const res = await this._db.query('DELETE FROM <complete the query>', [key]);
-    return exists;
+    const existingRecord = await this.lookup(key);
+    if (existingRecord) {
+      const res = await this._db.query('DELETE FROM links WHERE key = $1', [key]);
+      return existingRecord;
+    }
+    else {
+      return {
+        key: key,
+        url: 'not-found'
+      };
+    }
   }
 }
 

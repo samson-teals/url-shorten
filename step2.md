@@ -30,3 +30,12 @@ You may want to create additional endpoints to implement the following (other) t
   - `location.replace`
   
 See https://stackoverflow.com/questions/1865837/whats-the-difference-between-window-location-and-window-location-replace for a discussion on the differences between the two `JS` strategies.
+
+-----
+
+## Other branches
+
+- Step 2b
+  - initial implementation of `insert`
+- Step 2c
+  - implementation of `remove`
