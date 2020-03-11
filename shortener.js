@@ -15,8 +15,7 @@ class Shortener extends dbClient {
   }
 
   async exists(url) {
-    // todo: fill in query
-    const res = await this._db.query('SELECT $1', [key]);
+    const res = await this._db.query('SELECT url, key FROM links WHERE url = $1', [url]);
     return res.rows.length ? res.rows[0] : null;
   }
 
@@ -29,23 +28,21 @@ class Shortener extends dbClient {
   }
 
   async insert(url, key = null) {
-    // check if a record exists
-    // - if it does, then this.update() the record
-    // - if it doesn't
-    //   - generate a new key using this.nextKey()
-    //   - using the key, insert a new record into the database
+    const existingRecord = await this.exists(url);
+    if (existingRecord) {
+      return this.update(existingRecord.key);
+    }
 
-    key = await this.nextKey(null);
+    if (!key) {
+      key = await this.nextKey(url);
+    }
 
-    // "RETURNING *" is specific to postgres and will let you return the new values you just inserted
-    const res = await this._db.query('INSERT INTO links(key, url) VALUES ($1, $2) RETURNING *', [key, url]);
+    const res = await this._db.query('INSERT INTO links(key, url) VALUES($1, $2) RETURNING *', [key, url]);
     return res.rows.length ? res.rows[0] : null;
   }
 
   async update(key) {
-    // CURRENT_TIMESTAMP is a postgres function that returns the current time
-    // - e.g. try "SELECT CURRENT_TIMESTAMP"
-    const res = await this._db.query('UPDATE links SET updated = CURRENT_TIMESTAMP  <fill in condition>', [key]);
+    const res = await this._db.query('UPDATE links SET updated = CURRENT_TIMESTAMP WHERE key = $1 RETURNING *', [key]);
     return res.rows.length ? res.rows[0] : null;
   }
 
