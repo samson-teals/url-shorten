@@ -7,6 +7,9 @@ const linkRowTemplate = Handlebars.compile(`
     <td>{{created}}</td>
   </tr>
 `);
+const removeStatusTemplate = Handlebars.compile(`
+  removed key {{key}}
+`);
 
 $(document).ready(async () => {
   $('#add').click(addHandler);
@@ -89,7 +92,7 @@ const populateAddStatus = data => {
 };
 
 const populateRemoveStatus = data => {
-  $('#status').html(`removed key ${data.key}`);
+  $('#status').html(removeStatusTemplate(data));
 };
 
 const renderLinkData = data => {
