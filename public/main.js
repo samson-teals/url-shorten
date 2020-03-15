@@ -1,3 +1,13 @@
+// Templates
+const linkRowTemplate = Handlebars.compile(`
+  <tr>
+    <td><a href="r/{{key}}">{{key}}</a></td>
+    <td><a href="{{url}}">{{url}}</a></td>
+    <td>{{updated}}</td>
+    <td>{{created}}</td>
+  </tr>
+`);
+
 $(document).ready(async () => {
   $('#add').click(addHandler);
   $('#remove').click(removeHandler);
@@ -58,10 +68,10 @@ const populateLast = async () => {
   let tableData = $('#last tbody');
   tableData.empty();
 
-  // later, try using a template system to generate the table rows
   data.forEach(row => {
-    const { key, url, created, updated } = renderLinkData(row);
-    tableData.append(`<tr><td>${key}</td><td>${url}</td><td>${updated}</td><td>${created}</td></tr>`);
+    const linkRowData = renderLinkData(row);
+    const linkRowHtml = linkRowTemplate(linkRowData);
+    tableData.append(linkRowHtml);
   });
 };
 
@@ -88,8 +98,6 @@ const renderLinkData = data => {
   let created = data.created;
   let updated = data.updated;
 
-  key = `<a href="r/${key}">${key}</a>`;
-  url = `<a href="${url}">${url}</a>`;
   created = moment.utc(created).local().format('lll');
   updated = moment.utc(updated).local().format('lll');
 
