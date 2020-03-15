@@ -37,9 +37,13 @@ See https://stackoverflow.com/questions/1865837/whats-the-difference-between-win
 
 - Step 2b
   - initial implementation of `insert`
+  - https://github.com/samson-teals/url-shorten/compare/step-2_service...step-2_service-b
 - Step 2c
   - implementation of `remove`
+  - https://github.com/samson-teals/url-shorten/compare/step-2_service-b...step-2_service-c
 - Step 2d
   - a "better" `insert` that `update`s the record if the user tries to insert the same url again
+  - https://github.com/samson-teals/url-shorten/compare/step-2_service-c...step-2_service-d
 - Step 2e
   - enhancements for a better user experience
+  - https://github.com/samson-teals/url-shorten/compare/step-2_service-d...step-2_service-e
