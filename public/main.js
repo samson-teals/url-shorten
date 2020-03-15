@@ -7,6 +7,15 @@ const linkRowTemplate = Handlebars.compile(`
     <td>{{created}}</td>
   </tr>
 `);
+const addStatusTemplate = Handlebars.compile(`
+  Add ok:
+  <ul>
+    <li>key: <a href="r/{{key}}">{{key}}</a></li>
+    <li>url: <a href="{{url}}">{{url}}</a></li>
+    <li>updated: {{updated}}</li>
+    <li>created: {{created}}</li>
+  </ul>
+`);
 const removeStatusTemplate = Handlebars.compile(`
   removed key {{key}}
 `);
@@ -85,8 +94,8 @@ const populateErrorStatus = () => {
 const populateAddStatus = data => {
   let status = $('#status');
 
-  const { key, url, created, updated } = renderLinkData(data);
-  const statusStr = `Add ok:<ul><li>key: ${key}</li><li>url: ${url}</li><li>updated: ${updated}</li><li>created: ${created}</li></ul>`;
+  const linkRowData = renderLinkData(data);
+  const statusStr = addStatusTemplate(linkRowData);
 
   status.html(statusStr);
 };
