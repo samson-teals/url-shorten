@@ -1,7 +1,7 @@
 // Templates
 const linkRowTemplate = Handlebars.compile(`
   <tr>
-    <td><a href="r/{{key}}">{{key}}</a></td>
+    <td><a href="h/{{key}}">{{key}}</a></td>
     <td><a href="{{url}}">{{url}}</a></td>
     <td>{{updated}}</td>
     <td>{{created}}</td>

@@ -1,6 +1,7 @@
 const fastify = require('fastify');
 const fastify_static = require('fastify-static');
 const path = require('path');
+const template = require('./template');
 
 ///////////////////////////////////////////////////////////
 // Initialize fastify server and register static files
@@ -34,6 +35,8 @@ const initdb = new InitDb();
 
 const Shortener = require('./shortener');
 const shortener = new Shortener();
+
+const defaultDelay = 10;
 
 ///////////////////////////////////////////////////////////
 // Main async section runs after static initialization
@@ -89,6 +92,22 @@ const main = async () => {
     }
   });
 
+  app.get('/h/:key', async (req, res) => {
+    const key = req.params.key;
+    const delay = defaultDelay;
+
+    const str = await renderRedirect(template.html_meta, key, delay);
+    sendHtmlOr404(res, str);
+  });
+
+  app.get('/h/:key/:delay(^\\d+)', async (req, res) => {
+    const key = req.params.key;
+    const delay = req.params.delay;
+
+    const str = await renderRedirect(template.html_meta, key, delay);
+    sendHtmlOr404(res, str);
+  });
+
   ///////////////////////////////////////////////////////////
   // start application server
   ///////////////////////////////////////////////////////////
@@ -96,3 +115,28 @@ const main = async () => {
   app.listen(port, '0.0.0.0', () => console.log(`Shortener app listening on port ${port}!`));
 };
 main();
+
+///////////////////////////////////////////////////////////
+// Extra supporting functions
+///////////////////////////////////////////////////////////
+
+const sendHtmlOr404 = (res, str) => {
+  if (str) {
+    res.sendHtml(str);
+  }
+  else {
+    res.send404();
+  }
+};
+
+const renderRedirect = async(template, key, delay) => {
+  let data = await shortener.lookup(key);
+
+  if (data && data.url) {
+    data.delay = delay;
+    return template(data);
+  }
+  else {
+    return null;
+  }
+};
