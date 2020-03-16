@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title>JS Redirect</title>
+</head>
+<body>
+  <p>Redirecting in <span id="delay">{{delay}}</span> seconds, or click <a href="{{url}}">{{url}}</a>.</p>
+</body>
+<script>
+  function doRedirect() {
+    // works like an HTML meta redirect (or click)
+    window.location = "{{url}}";
+  }
+
+  let delay = {{delay}};
+  if (delay <= 0) {
+    doRedirect();
+  }
+  else {
+    setInterval(() => {
+      delay--;
+
+      const delayElement = document.getElementById('delay');
+      delayElement.innerHTML = delay;
+
+      if (delay <= 0) {
+        doRedirect();
+      }
+    }, 1000);
+  }
+</script>
+</html>
