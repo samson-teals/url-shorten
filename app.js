@@ -124,6 +124,22 @@ const main = async () => {
     sendHtmlOr404(res, str);
   });
 
+  app.get('/j/:key', async (req, res) => {
+    const key = req.params.key;
+    const delay = defaultDelay;
+
+    const str = await renderRedirect(template.js_replace, key, delay);
+    sendHtmlOr404(res, str);
+  });
+
+  app.get('/j/:key/:delay(^\\d+)', async (req, res) => {
+    const key = req.params.key;
+    const delay = req.params.delay;
+
+    const str = await renderRedirect(template.js_replace, key, delay);
+    sendHtmlOr404(res, str);
+  });
+
   ///////////////////////////////////////////////////////////
   // start application server
   ///////////////////////////////////////////////////////////
