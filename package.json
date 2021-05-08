@@ -5,7 +5,7 @@
   "dependencies": {
     "fastify": "^2.11",
     "fastify-static": "^2.5",
-    "handlebars": "^4.7.3",
+    "handlebars": "^4.7.7",
     "pg": "^7.18.2"
   },
   "engines": {
