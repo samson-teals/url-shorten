@@ -4,7 +4,7 @@
   },
   "dependencies": {
     "fastify": "^2.11",
-    "fastify-static": "^2.5",
+    "fastify-static": "^4.2",
     "handlebars": "^4.7.3",
     "pg": "^7.18.2"
   },
